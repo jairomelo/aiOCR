@@ -13,13 +13,14 @@ IMAGES_DIR = Path(WORKING_DIR, 'images')
 PDF_DIR = Path(WORKING_DIR, 'PDF')
 TRANSCRIPTIONS_DIR = Path(WORKING_DIR, 'transcriptions')
 GT_DIR = Path(TRANSCRIPTIONS_DIR, 'groundtruth')
-
+EVALUATION_DIR = Path(WORKING_DIR, 'evaluations')
 
 def set_local_paths():
     IMAGES_DIR.mkdir(parents=True, exist_ok=True)
     PDF_DIR.mkdir(parents=True, exist_ok=True)
     TRANSCRIPTIONS_DIR.mkdir(parents=True, exist_ok=True)
     GT_DIR.mkdir(parents=True, exist_ok=True)
+    EVALUATION_DIR.mkdir(parents=True, exist_ok=True)
     
 if __name__ == "__main__":
     import argparse
