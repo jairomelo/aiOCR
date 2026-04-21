@@ -1,0 +1,26 @@
+F Pineda
+46(3)
+
+¿A DONDE VAMOS A PARAR?
+
+OJUEADA
+
+SOBRE LAS TENDENCIAS DE LA ÉPOCA ACTUAL:
+
+POR
+
+El presbitero J. Gaume,
+
+VICARIO JENERAL DE LA DIOCESIS DE NEVERS, CABALLERO DE LA ÓRDEN DE S. SILVESTRE, INDIVIDUO DE LA ACADEMIA DE LA RELIJION CATÓLICA EN ROMA ETC.
+
+*Videte, vigilate et orate.*  
+Ved, velad i orad.  
+S. MARC. XII, 33.  
+[Ilustración de símbolos religiosos]
+
+
+BOGOTA.
+
+REIMP. EN LA DE TORRES AMAYA POR CARLOS LOPEZ.
+
+©Biblioteca Nacional de Colombia
