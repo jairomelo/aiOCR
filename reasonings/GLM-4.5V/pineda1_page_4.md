@@ -2,7 +2,7 @@
 using: zai-org/GLM-4.5V
 inference-provider: Novita
 prompt: Convert the document to Markdown and be as close to the original text as possible (including any typos and print errors). Use single asterisks for italics, double for bold, and triple asterisks for bold and italics. Include any additional Markdown formatting to represent the original text format.
-attachement: pineda1_page_4.png
+attachement: images/pineda1/pineda1_page_4.png
 ---
 
 Got it, let's tackle this. The user wants the document converted to Markdown with strict adherence to the original, including typos and print errors. First, I need to look at the original text carefully.
