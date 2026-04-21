@@ -1,0 +1,13 @@
+-4-
+
+puede aguardar la sentencia que ha de entregarle inocente. Escúpenle en el rostro, le abofetean, le azotan con varas hasta dejar descubiertas las venas i los huesos: el cuerpo de la víctima no es mas que una llaga de los pies a la cabeza.
+
+A la crueldad se junta una mofa insultante. Como el tigre que juega con su presa ántes de devorarla, así aquel pueblo bárbaro ultraja al manso cordero ántes de verter su samgre. Le visten una túnica de escarnio: le ponen en la mano una caña á guisa de cetro i en la cabeza una corona de espinas en señal de diadema: luego vendándole los ojos doblan la rodilla, le dan fuertes bofetadas en el rostro i le dicen: Dios te guarde, rei de los judios.
+
+¡I este justo era el bienhechor público de la nacion! Entre aquel pueblo de verdugos no se hallaria uno que no hubiese esperimentado los saludables efectos de la poderosa bondad de él en su persona o en la de los suyos. Purificó a los leprosos, restituyó la vista á los ciegos y el oído a los sordos, libró á los endemoniados, resucitó los muertos, á todos hizo bien i á ninguno mal. Miéntras le conculcan como un vaso de tierra, se mantiene él sereno i lleno de dignidad. Semejante al tierno cordero que es conducido en silencio al matadero, así él se deja llevar al suplicio sin abrir la boca. Conjúranle en el nombre de Dios que hable, i él responde con mansedumbre i verdad. Sus palabras se imputan á crimen, i un bofeton mas es el premio de su obediencia.
+
+El justo le recibe i calla. Su resignacion exaspera á los perseguidores, cuyas vociferaciones van en aumento haciendo resonar como un trueno los ecos de la ciudad deicida: *Que le crucifiquen: que le crucifiquen;* i le llevan brutalment á empellones ante el juez que puede entregarles la cabeza del inocente. Este juez es un estranjero un ambicioso, un cobarde; sin embargo le domina la inocencia del acusado i la proclama dicienco: "¡Qué mal ha hecho!--Si no fuera culpable, no te le hubiéramos entregado.--Pues ¿qué mal ha hecho?--Aspira á reinar, i nosotros no queremos que reine sobre nosotros [1]."
+
+---
+
+[1] Se regem facit... Non habemus regem nisi Cæ erem... Nolumns hunc regnare super nos (Joan. XIX, 12, 15: Luc. XIX, 14.)
