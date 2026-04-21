@@ -1,0 +1,17 @@
+{
+    "pdf_name": "pineda1.pdf",
+    "total_pages_in_pdf": 177,
+    "dpi": 300,
+    "output_format": "png",
+    "output_directory": "images/pineda1",
+    "page_1": "images/pineda1/pineda1_page_1.png",
+    "page_2": "images/pineda1/pineda1_page_2.png",
+    "page_3": "images/pineda1/pineda1_page_3.png",
+    "page_4": "images/pineda1/pineda1_page_4.png",
+    "page_5": "images/pineda1/pineda1_page_5.png",
+    "page_6": "images/pineda1/pineda1_page_6.png",
+    "page_7": "images/pineda1/pineda1_page_7.png",
+    "page_8": "images/pineda1/pineda1_page_8.png",
+    "page_9": "images/pineda1/pineda1_page_9.png",
+    "page_10": "images/pineda1/pineda1_page_10.png"
+}

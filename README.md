@@ -20,6 +20,12 @@ The following foundation model is included as a baseline for comparison:
 
 - GLM-4.5V (multimodal) - [model card](https://huggingface.co/zai-org/GLM-4.5V)
 
+## Folder Structure
+
+### Source Artifacts
+
+PDF and images are stored in two self-referencing directories. `images` directory group the images in a directory named as the origin PDF. A simple manifest for the conversion is keep in the folder to document the parameters used during the conversion.
+
 ## Relevant files
 
 - **Configuration**: A simple global configuration file is included in `helpers/globalc.py`. You can apply local directory changes in the workspace by running `python helpers/globalc.py --config-local`.
