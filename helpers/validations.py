@@ -1,6 +1,7 @@
 import jiwer
 import frontmatter
 from pathlib import Path
+import globalc
 
 def validate_ocr(gt_page: list[str], ocr_page: list[str]) -> dict:
     evaluation = {}
@@ -14,7 +15,7 @@ def validate_ocr(gt_page: list[str], ocr_page: list[str]) -> dict:
         
     return evaluation
 
-def validate_ocr_from_markdown(md_file: str | Path , gen_page: str | Path) -> dict:
+def validate_ocr_from_markdown(md_file: str | Path , gen_page: str | Path, save_result: bool = False) -> dict:
     post = frontmatter.load(str(md_file))
     try:
         ocr = frontmatter.loads(str(gen_page))
@@ -23,15 +24,25 @@ def validate_ocr_from_markdown(md_file: str | Path , gen_page: str | Path) -> di
             ocr = frontmatter.load(f)
     gt_page = post.content.splitlines()
     ocr_page = ocr.content.splitlines()
-    print(type(gt_page), type(ocr_page))
     
+    if save_result:
+        evaluation = validate_ocr(gt_page, ocr_page)
+        result_file = Path(globalc.EVALUATION_DIR, f'{md_file.stem}_vs_{gen_page.stem}_evaluation.json')
+        with open(result_file, 'w') as f:
+            import json
+            json.dump(evaluation, f, indent=4)
+            
     return validate_ocr(gt_page, ocr_page)
 
 if __name__ == "__main__":
     # Example usage
     WORKING_DIR = Path.cwd()
-    md_file = Path(WORKING_DIR, 'transcriptions/groundtruth/pineda1_page_4.md.md')
-    ocr_page = Path(WORKING_DIR, 'transcriptions/GLM-4.5V/pineda1_page_4.md')
     
-    evaluation = validate_ocr_from_markdown(md_file, ocr_page)
+    validation_page = 'pineda1_page_4'
+    against = 'GLM-4.5V'
+    
+    md_file = Path(WORKING_DIR, 'transcriptions/groundtruth/', f'{validation_page}.md')
+    ocr_page = Path(WORKING_DIR, 'transcriptions/', against, f'{validation_page}.md')
+    
+    evaluation = validate_ocr_from_markdown(md_file, ocr_page, save_result=True)
     print(evaluation)
