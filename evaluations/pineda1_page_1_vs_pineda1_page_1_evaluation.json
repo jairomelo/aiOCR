@@ -66,27 +66,21 @@
         "cer": 0.0
     },
     "12": {
-        "text": "[Arma Christi imagen]",
-        "ocr": "[Ilustraci\u00f3n de s\u00edmbolos religiosos]",
-        "wer": 1.3333333333333333,
-        "cer": 1.4285714285714286
-    },
-    "13": {
         "text": "BOGOTA.",
         "ocr": "BOGOTA.",
         "wer": 0.0,
         "cer": 0.0
     },
-    "14": {
+    "13": {
         "text": "REIMP. EN LA DE TORRES AMAYA POR CARLOS LOPEZ.",
         "ocr": "REIMP. EN LA DE TORRES AMAYA POR CARLOS LOPEZ.",
         "wer": 0.0,
         "cer": 0.0
     },
-    "15": {
+    "14": {
         "text": "1852.",
-        "ocr": "\u00a9Biblioteca Nacional de Colombia",
-        "wer": 4.0,
-        "cer": 6.4
+        "ocr": "1852.",
+        "wer": 0.0,
+        "cer": 0.0
     }
 }
