@@ -3,11 +3,11 @@ from pathlib import Path
 import helpers.globalc as globalc
 import re
 
-def validate_ocr(gt_page: list[str], ocr_page: list[str]) -> dict:
+def validate_lines(gt_page: list[str], ocr_page: list[str]) -> dict:
     evaluation = {}
     
-    gt_page = [line for line in gt_page if line != '' or line.isspace()]
-    ocr_page = [line for line in ocr_page if line != '' or line.isspace()]
+    gt_page = [line for line in gt_page if line.strip() != '']
+    ocr_page = [line for line in ocr_page if line.strip() != '']
     
     gt_page = [line for line in gt_page if not re.match(r'\[.*\]', line)]  # Remove lines that are just markdown links
     ocr_page = [line for line in ocr_page if not re.match(r'\[.*\]', line)]  
@@ -21,27 +21,40 @@ def validate_ocr(gt_page: list[str], ocr_page: list[str]) -> dict:
         
     return evaluation
 
-def validate_ocr_from_markdown(model: str, md_file: str | Path , gen_page: str | Path, save_result: bool = False) -> dict:
+def validate_page(gt_page: str, ocr_page: str) -> dict:
+    wer = jiwer.wer(gt_page, ocr_page)
+    cer = jiwer.cer(gt_page, ocr_page)
+    evaluation = {"text": gt_page, "ocr": ocr_page, "wer": wer, "cer": cer}
+    return evaluation
+
+def validate_ocr_from_markdown(model: str, md_file: str | Path , gen_page: str | Path, line_level: bool = False, save_result: bool = False) -> dict:
+    """Validate OCR output against ground truth markdown files.
+    
+    Args:
+        model (str): The name of the OCR model being evaluated.
+        md_file (str | Path): The path to the ground truth markdown file.
+        gen_page (str | Path): The path to the OCR output markdown file.
+        line_level (bool, optional): Whether to validate at the line level or page level. Defaults to False (page level).
+        save_result (bool, optional): Whether to save the evaluation result as a JSON file. Defaults to False.
+    """
     md_file = Path(md_file)
     gen_page = Path(gen_page)
     
     if not md_file.exists() or not gen_page.exists():
         print(f"Either the ground truth page '{md_file}' or the OCR page '{gen_page}' does not exist.")
         return {}
-    with open(md_file, 'r') as f:
-        gt_page = f.read().splitlines()
-    with open(gen_page, 'r') as f:
-        ocr_page = f.read().splitlines()
-
+    
+    evaluation = validate_lines(md_file.read_text().splitlines(), gen_page.read_text().splitlines()) if line_level else validate_page(md_file.read_text(), gen_page.read_text())
     
     if save_result:
-        evaluation = validate_ocr(gt_page, ocr_page)
         result_file = Path(globalc.EVALUATION_DIR, f'{model}_{md_file.stem}_evaluation.json')
+        if line_level:
+            result_file = Path(globalc.EVALUATION_DIR, f'{model}_{md_file.stem}_line_level_evaluation.json')
         with open(result_file, 'w') as f:
             import json
             json.dump(evaluation, f, indent=4)
             
-    return validate_ocr(gt_page, ocr_page)
+    return evaluation
 
 if __name__ == "__main__":
     # Example usage
@@ -53,5 +66,5 @@ if __name__ == "__main__":
     md_file = Path(WORKING_DIR, 'transcriptions/groundtruth/', f'{validation_page}.md')
     ocr_page = Path(WORKING_DIR, 'transcriptions/', against, f'{validation_page}.md')
     
-    evaluation = validate_ocr_from_markdown(md_file, ocr_page, save_result=True)
+    evaluation = validate_ocr_from_markdown(against, md_file, ocr_page, save_result=True, line_level=True)
     print(evaluation)
