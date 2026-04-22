@@ -18,7 +18,7 @@ def evaluate_model(model: str, validation_page: str, typeOCR: str = 'md', line_l
     # better safe than sorry
     validation_page = re.sub(r'\.[a-zA-Z0-9]+$', '', validation_page)  # Remove file extension if provided
     
-    gt_page = Path(WORKING_DIR, 'transcriptions/groundtruth/', f'{validation_page}.md')
+    gt_page = Path(WORKING_DIR, 'transcriptions/groundtruth/', f'{validation_page}.txt')
     ocr_page = Path(WORKING_DIR, 'transcriptions/', model, f'{validation_page}.{typeOCR}')
     
     if not Path(gt_page).exists() or not Path(ocr_page).exists():
