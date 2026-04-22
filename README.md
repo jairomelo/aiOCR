@@ -8,6 +8,10 @@ This repository contains the code and documentation for the project 'Beyond "Dir
 - Reproducibility: Consistency of results across iterations
 - Accessibility: Minimum hardware requirements for these tasks
 
+## Base Prompt
+
+    Convert the document to plain text, as close to the original as possible (including typos, print errors, and original grammar and spelling). Do not add any formatting, markdown, or annotations.
+
 ## Models
 
 This project evaluates the following model:
@@ -18,7 +22,7 @@ This project evaluates the following model:
 
 The following foundation model is included as a baseline for comparison:
 
-- GLM-4.5V (multimodal) - [model card](https://huggingface.co/zai-org/GLM-4.5V)
+- GLM-4.5V (VLM) - [model card](https://huggingface.co/zai-org/GLM-4.5V)
 
 ## Folder Structure
 
