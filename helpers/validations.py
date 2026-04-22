@@ -1,12 +1,16 @@
 import jiwer
 from pathlib import Path
 import helpers.globalc as globalc
+import re
 
 def validate_ocr(gt_page: list[str], ocr_page: list[str]) -> dict:
     evaluation = {}
     
     gt_page = [line for line in gt_page if line != '' or line.isspace()]
     ocr_page = [line for line in ocr_page if line != '' or line.isspace()]
+    
+    gt_page = [line for line in gt_page if not re.match(r'\[.*\]', line)]  # Remove lines that are just markdown links
+    ocr_page = [line for line in ocr_page if not re.match(r'\[.*\]', line)]  
     
     ln = 1
     for ref, ocr in zip(gt_page, ocr_page):
