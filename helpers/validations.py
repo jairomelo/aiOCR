@@ -21,7 +21,7 @@ def validate_ocr(gt_page: list[str], ocr_page: list[str]) -> dict:
         
     return evaluation
 
-def validate_ocr_from_markdown(md_file: str | Path , gen_page: str | Path, save_result: bool = False) -> dict:
+def validate_ocr_from_markdown(model: str, md_file: str | Path , gen_page: str | Path, save_result: bool = False) -> dict:
     md_file = Path(md_file)
     gen_page = Path(gen_page)
     
@@ -36,7 +36,7 @@ def validate_ocr_from_markdown(md_file: str | Path , gen_page: str | Path, save_
     
     if save_result:
         evaluation = validate_ocr(gt_page, ocr_page)
-        result_file = Path(globalc.EVALUATION_DIR, f'{md_file.stem}_vs_{gen_page.stem}_evaluation.json')
+        result_file = Path(globalc.EVALUATION_DIR, f'{model}_{md_file.stem}_evaluation.json')
         with open(result_file, 'w') as f:
             import json
             json.dump(evaluation, f, indent=4)

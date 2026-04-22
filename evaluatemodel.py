@@ -23,7 +23,7 @@ def evaluate_model(model: str, validation_page: str, typeOCR: str = 'md'):
         print(f"Either the ground truth page '{gt_page}' or the OCR page '{ocr_page}' does not exist.")
         return
     
-    evaluation = validations.validate_ocr_from_markdown(gt_page, ocr_page, save_result=True)
+    evaluation = validations.validate_ocr_from_markdown(model, gt_page, ocr_page, save_result=True)
     print(evaluation)
     
 if __name__ == "__main__":
