@@ -1,29 +1,34 @@
 import jiwer
-import frontmatter
 from pathlib import Path
-import globalc
+import helpers.globalc as globalc
 
 def validate_ocr(gt_page: list[str], ocr_page: list[str]) -> dict:
     evaluation = {}
     
+    gt_page = [line for line in gt_page if line != '' or line.isspace()]
+    ocr_page = [line for line in ocr_page if line != '' or line.isspace()]
+    
     ln = 1
-    for ref, hyp in zip(gt_page, ocr_page):
-        wer = jiwer.wer(ref, hyp)
-        cer = jiwer.cer(ref, hyp)
-        evaluation[ln] = {"text": ref, "wer": wer, "cer": cer}
+    for ref, ocr in zip(gt_page, ocr_page):
+        wer = jiwer.wer(ref, ocr)
+        cer = jiwer.cer(ref, ocr)
+        evaluation[ln] = {"text": ref, "ocr": ocr, "wer": wer, "cer": cer}
         ln += 1
         
     return evaluation
 
 def validate_ocr_from_markdown(md_file: str | Path , gen_page: str | Path, save_result: bool = False) -> dict:
-    post = frontmatter.load(str(md_file))
-    try:
-        ocr = frontmatter.loads(str(gen_page))
-    except TypeError:
-        with open(gen_page, 'r') as f:
-            ocr = frontmatter.load(f)
-    gt_page = post.content.splitlines()
-    ocr_page = ocr.content.splitlines()
+    md_file = Path(md_file)
+    gen_page = Path(gen_page)
+    
+    if not md_file.exists() or not gen_page.exists():
+        print(f"Either the ground truth page '{md_file}' or the OCR page '{gen_page}' does not exist.")
+        return {}
+    with open(md_file, 'r') as f:
+        gt_page = f.read().splitlines()
+    with open(gen_page, 'r') as f:
+        ocr_page = f.read().splitlines()
+
     
     if save_result:
         evaluation = validate_ocr(gt_page, ocr_page)
