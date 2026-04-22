@@ -23,4 +23,6 @@ BOGOTA.
 
 REIMP. EN LA DE TORRES AMAYA POR CARLOS LOPEZ.
 
+1852.
+
 ©Biblioteca Nacional de Colombia
