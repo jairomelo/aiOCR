@@ -21,6 +21,7 @@ def set_local_paths():
     TRANSCRIPTIONS_DIR.mkdir(parents=True, exist_ok=True)
     GT_DIR.mkdir(parents=True, exist_ok=True)
     EVALUATION_DIR.mkdir(parents=True, exist_ok=True)
+    print("All done!")
     
 if __name__ == "__main__":
     import argparse
