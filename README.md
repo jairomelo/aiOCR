@@ -10,7 +10,7 @@ This repository contains the code and documentation for the project 'Beyond "Dir
 
 ## Base Prompt
 
-    Convert the document to plain text, as close to the original as possible (including typos, print errors, and original grammar and spelling). Do not add any formatting, markdown, or annotations.
+> Convert the document to plain text, as close to the original as possible (including typos, print errors, and original grammar and spelling). Do not add any formatting, markdown, or annotations.
 
 ## Models
 
@@ -28,8 +28,14 @@ The following foundation model is included as a baseline for comparison:
 
 ### Source Artifacts
 
-PDF and images are stored in two self-referencing directories. `images` directory group the images in a directory named as the origin PDF. A simple manifest for the conversion is keep in the folder to document the parameters used during the conversion.
+PDFs and images are stored in two corresponding directories. The `images` directory groups images into subdirectories named after the source PDF. A simple conversion manifest is kept in each folder to document the parameters used during conversion.
+
+An important aspect of this transformation is that image size is kept manageable (about 300 DPI). This can affect OCR quality, particularly for complex layouts or small font sizes, but it helps reduce token consumption.
+
+The text layer is extracted using `PyMuPDF`, and each page's text is stored in the `transcriptions/source` directory.
 
 ## Relevant files
 
 - **Configuration**: A simple global configuration file is included in `helpers/globalc.py`. You can apply local directory changes in the workspace by running `python helpers/globalc.py --config-local`.
+- **pdf2img**: CLI tool that extracts the text layer and converts PDF pages into images. Explore available parameters by running `python pdf2img.py --help`.
+- **evaluatemodel**: CLI tool that evaluates a model's text recognition output against a ground-truth, human-generated transcription.
