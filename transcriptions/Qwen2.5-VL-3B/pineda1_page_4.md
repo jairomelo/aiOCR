@@ -1,0 +1,11 @@
+puede aguardar la sentencia que ha de entregarle inocente.
+
+Escupíeles en el rostro, le abofeteen, le azotan con varas hasta dejar descubiertas las venas y los huesos: el cuerpo de la víctima no es mas que una llaga de lo pies la cabeza.
+
+A la crueldad se junta una mofa insultante. Como el tijere que juega con su presa antes de devorarlo, así aquel pueblo bárbaro ultraña al manos cordero antes de vértér sus sangre. Le visten una túmida de escenario: le ponen en la mano una caña á guisa de estro y en la cebada una corona de espinas en señal de diadema: luego ven- dándoles los ojos doblan la rodilla, le dan fuertes bofetadas en el rostro y le dicen: Dios te guarde rei de los judios.
+
+¿¡Y este justo era el bienhechor público de la nación! Entre aquel pueblo de verdugs no se hallaría uno que no hubiese experimentado los saludables efectos de la poderosa bondad de él en su persona o en la de los suyos. Puriícar á los leprosos, restituyó la vista á los ciegos y el oído á los sordos, labró á los enemendados, resultó los muertos, á todos hizo bien i á ningún mal. Mientras le concluían como un vaso de tercia, se mantiene él sereno i lleno de dignidad. Semcanteñá al fiero cordero que es conducido en silencio al matadero, así el se deja llevar al supicio sin abrir la boca. Conjuró en el nombre de Dios que hable, i él responde con mansedumbre i verdad. Sus palabras se implun á crimen, i un bofeto mae es el premio de su obediencia.
+
+El justo le recibe i ella. Su resignation exaspera á los persiguidores, cuyas vocificaciones van en- aumento haciendo resonar como un trueno los écos de la ciudad decida: Que le eruaquifé, que el crucifique, i le llevan brutalemente á empolones ante el juez que puede entregarle la cabeza del innocent. Este juez es un eñastiano un ambicioso, un cobarde; sin embargo le domina la incocencia del acusado i la proclama diciendo: ¡Qué mal ha hecho!- Si no fuera culpable, no te le habríamos entregado. Pues quin mal ha hecho? Aspira al reinar nosotros no queremos que reine sobre nosotros [I].
+
+(1) Se regen facil?... Non habemis regen nusi Ce elem...Nolumas hune regnare suer nos. Jonn. XIX, 12, 15: Luc. XIX, 14.)
