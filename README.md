@@ -16,7 +16,11 @@ This repository contains the code and documentation for the project 'Beyond "Dir
 
 This project evaluates the following model:
 
+### Running with 4-bit compression (quantization)
+
 - DeepSeek OCR [model card](https://huggingface.co/deepseek-ai/DeepSeek-OCR)
+- Gemma 4 E4B [model card](https://huggingface.co/google/gemma-4-E4B)
+- Qwen2.5-VL-3B-Instruct [model card](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct)
 
 ### Foundation Models
 
