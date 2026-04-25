@@ -19,8 +19,12 @@ This project evaluates the following model:
 ### Running with 4-bit compression (quantization)
 
 - DeepSeek OCR [model card](https://huggingface.co/deepseek-ai/DeepSeek-OCR)
-- Gemma 4 E4B [model card](https://huggingface.co/google/gemma-4-E4B)
 - Qwen2.5-VL-3B-Instruct [model card](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct)
+
+### Failed tests 
+
+- Gemma 4 E4B [model card](https://huggingface.co/google/gemma-4-E4B) -> Failed to identify the text in the image
+- InternVL3-2B [model card](https://huggingface.co/OpenGVLab/InternVL3-2B) -> No run on compressed mode
 
 ### Foundation Models
 
