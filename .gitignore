@@ -8,3 +8,15 @@ __pycache__/
 .ipynb_checkpoints/
 
 .env
+
+# Exclude specific images not used for transcribing
+images/lacolmena1842/
+images/laIlustracion_1887-08-15/
+images/CCundinamarca/CCundinamarca_page_3.png
+images/pineda1/pineda1_page_2.png
+images/pineda1/pineda1_page_5.png
+images/pineda1/pineda1_page_6.png
+images/pineda1/pineda1_page_7.png
+images/pineda1/pineda1_page_8.png
+images/pineda1/pineda1_page_9.png
+images/pineda1/pineda1_page_10.png
