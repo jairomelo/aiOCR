@@ -20,6 +20,7 @@ This project evaluates the following model:
 
 - DeepSeek OCR [model card](https://huggingface.co/deepseek-ai/DeepSeek-OCR)
 - Qwen2.5-VL-3B-Instruct [model card](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct)
+- Qwen2.5-VL-7B-Instruct [model card](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct)
 
 ### Failed tests
 
