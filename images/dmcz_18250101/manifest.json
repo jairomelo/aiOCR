@@ -1,0 +1,9 @@
+{
+    "pdf_name": "dmcz_18250101.pdf",
+    "total_pages_in_pdf": 4,
+    "dpi": 300,
+    "output_format": "png",
+    "output_directory": "images/dmcz_18250101",
+    "page_1": "images/dmcz_18250101/dmcz_18250101_page_1.png",
+    "page_4": "images/dmcz_18250101/dmcz_18250101_page_4.png"
+}
