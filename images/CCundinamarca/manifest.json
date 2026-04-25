@@ -1,0 +1,10 @@
+{
+    "pdf_name": "CCundinamarca.pdf",
+    "total_pages_in_pdf": 46,
+    "dpi": 300,
+    "output_format": "png",
+    "output_directory": "images/CCundinamarca",
+    "page_1": "images/CCundinamarca/CCundinamarca_page_1.png",
+    "page_3": "images/CCundinamarca/CCundinamarca_page_3.png",
+    "page_46": "images/CCundinamarca/CCundinamarca_page_46.png"
+}
