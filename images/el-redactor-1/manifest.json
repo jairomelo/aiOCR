@@ -1,0 +1,9 @@
+{
+    "pdf_name": "el-redactor-1.pdf",
+    "total_pages_in_pdf": 5,
+    "dpi": 300,
+    "output_format": "png",
+    "output_directory": "images/el-redactor-1",
+    "page_1": "images/el-redactor-1/el-redactor-1_page_1.png",
+    "page_2": "images/el-redactor-1/el-redactor-1_page_2.png"
+}
