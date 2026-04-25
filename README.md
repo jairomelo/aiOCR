@@ -27,6 +27,7 @@ This project evaluates the following model:
 - Gemma 4 E4B [model card](https://huggingface.co/google/gemma-4-E4B) -> Failed to identify the text in the image
 - InternVL3-2B [model card](https://huggingface.co/OpenGVLab/InternVL3-2B) -> No run on compressed mode
 - MiniCPM-V-2_6 [model card](https://huggingface.co/openbmb/MiniCPM-V-2_6) -> Depends on `flash-attn`, no compatible with T4 GPU
+- Phi-3.5-vision [model card](https://huggingface.co/microsoft/Phi-3.5-vision-instruct) -> In limited GPU setting, generate too many hallucinations to be considered functional.
 
 ### Foundation Models
 
