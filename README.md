@@ -21,10 +21,11 @@ This project evaluates the following model:
 - DeepSeek OCR [model card](https://huggingface.co/deepseek-ai/DeepSeek-OCR)
 - Qwen2.5-VL-3B-Instruct [model card](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct)
 
-### Failed tests 
+### Failed tests
 
 - Gemma 4 E4B [model card](https://huggingface.co/google/gemma-4-E4B) -> Failed to identify the text in the image
 - InternVL3-2B [model card](https://huggingface.co/OpenGVLab/InternVL3-2B) -> No run on compressed mode
+- MiniCPM-V-2_6 [model card](https://huggingface.co/openbmb/MiniCPM-V-2_6) -> Depends on `flash-attn`, no compatible with T4 GPU
 
 ### Foundation Models
 
