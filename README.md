@@ -23,6 +23,7 @@ These models run successfully with 4-bit quantization:
 - DeepSeek OCR [model card](https://huggingface.co/deepseek-ai/DeepSeek-OCR)
 - Qwen2.5-VL-3B-Instruct [model card](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct)
 - Qwen2.5-VL-7B-Instruct [model card](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct)
+- Florence-2-large [model card](https://huggingface.co/microsoft/Florence-2-large)
 
 ### Failed tests
 
