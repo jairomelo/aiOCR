@@ -40,6 +40,10 @@ The following foundation model is included as a baseline for comparison:
 
 - GLM-4.5V (multimodal) - [model card](https://huggingface.co/zai-org/GLM-4.5V)
 
+### Tesseract
+
+Tesseract is included as a traditional OCR baseline for comparison.
+
 ## Folder Structure
 
 ### Source Artifacts
