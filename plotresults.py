@@ -34,18 +34,6 @@ MODEL_SHORT = {
     "Tesseract-OCR":   "Tesseract",
 }
 
-DOC_META = {
-    "pineda1_page_4": {
-        "label": "pineda1 — page 4",
-        "desc":  "Printed book (1852)\n300 DPI · PNG",
-    },
-    "AR_SR8V4R3_4": {
-        "label": "AR_SR8V4R3 — page 4",
-        "desc":  "Handwritten archival\n200 DPI · JPG\nMultispectral scan",
-    },
-}
-
-
 def load_by_page() -> dict[str, dict[str, tuple]]:
     """Return {page: {model: (wer, cer, has_text)}}."""
     pattern = re.compile(r"^(.+?)_(.+?)_evaluation\.json$")
@@ -71,6 +59,33 @@ def find_image(page_key: str) -> Path | None:
             if candidate.exists():
                 return candidate
     return None
+
+
+def find_segmented_image(page_key: str) -> Path | None:
+    """Locate the DeepSeek-OCR segmentation image for a given page key."""
+    seg_root = Path("segmented") / "DeepSeek-OCR"
+    if not seg_root.exists():
+        return None
+    for doc_dir in sorted(seg_root.iterdir()):
+        if not doc_dir.is_dir():
+            continue
+        for ext in ("jpg", "png", "jpeg"):
+            candidate = doc_dir / f"{page_key}.{ext}"
+            if candidate.exists():
+                return candidate
+    return None
+
+
+def pick_best_worst_pages(data_by_page: dict) -> tuple[str, str]:
+    """Return (best_page, worst_page) by median WER across models."""
+    medians = {
+        page: np.median([v[0] for v in models.values()])
+        for page, models in data_by_page.items()
+        if models
+    }
+    best  = min(medians, key=medians.__getitem__)
+    worst = max(medians, key=medians.__getitem__)
+    return best, worst
 
 
 def load_evaluations() -> dict[str, dict[str, list[float]]]:
@@ -204,7 +219,6 @@ def plot(data: dict) -> None:
     if legend_items:
         columns = min(3, len(legend_items))
         chunks = np.array_split(legend_items, columns)
-        fig.text(0.02, 0.055, "Page key", fontsize=8, fontweight="bold", ha="left", va="bottom")
         for col, chunk in enumerate(chunks):
             key_text = "\n".join(f"{item[0]}: {item[1]}" for item in chunk)
             fig.text(
@@ -226,12 +240,18 @@ def plot(data: dict) -> None:
 
 def plot_spotlight(
     data_by_page: dict,
-    best_page: str = "pineda1_page_4",
-    worst_page: str = "AR_SR8V4R3_4",
+    best_page: str | None = None,
+    worst_page: str | None = None,
 ) -> None:
+    if best_page is None or worst_page is None:
+        auto_best, auto_worst = pick_best_worst_pages(data_by_page)
+        if best_page is None:
+            best_page = auto_best
+        if worst_page is None:
+            worst_page = auto_worst
+
     pages      = [best_page, worst_page]
-    accents    = ["#2ca02c", "#d62728"]
-    row_labels = ["Best document", "Worst document"]
+    row_labels = ["Best (lowest median WER)", "Worst (highest median WER)"]
 
     fig = plt.figure(figsize=(14, 8))
     gs  = gridspec.GridSpec(2, 3, width_ratios=[1.5, 2, 2], hspace=0.55, wspace=0.35)
@@ -240,8 +260,7 @@ def plot_spotlight(
         fontsize=14, fontweight="bold", y=1.01,
     )
 
-    for row, (page, accent, row_label) in enumerate(zip(pages, accents, row_labels)):
-        meta         = DOC_META.get(page, {"label": page, "desc": ""})
+    for row, (page, row_label) in enumerate(zip(pages, row_labels)):
         page_results = data_by_page.get(page, {})
         models_here  = sorted(page_results.keys())
         x            = np.arange(len(models_here))
@@ -249,7 +268,7 @@ def plot_spotlight(
 
         # --- Thumbnail ---
         ax_img = fig.add_subplot(gs[row, 0])
-        img_path = find_image(page)
+        img_path = find_segmented_image(page) or find_image(page)
         if img_path:
             img = imread(str(img_path))
             ax_img.imshow(img, aspect="auto")
@@ -260,11 +279,9 @@ def plot_spotlight(
         ax_img.set_xticks([])
         ax_img.set_yticks([])
         for spine in ax_img.spines.values():
-            spine.set_visible(True)
-            spine.set_edgecolor(accent)
-            spine.set_linewidth(2.5)
+            spine.set_visible(False)
         ax_img.set_title(
-            f"{row_label}\n{meta['label']}\n{meta['desc']}",
+            f"{row_label}\n{page}",
             fontsize=9, loc="left", pad=6,
         )
 
@@ -337,6 +354,18 @@ if __name__ == "__main__":
         default="boxplot",
         help="Chart type to generate (default: boxplot)",
     )
+    parser.add_argument(
+        "--best-page",
+        default=None,
+        metavar="PAGE",
+        help="Override the best page (default: auto-detected by median WER)",
+    )
+    parser.add_argument(
+        "--worst-page",
+        default=None,
+        metavar="PAGE",
+        help="Override the worst page (default: auto-detected by median WER)",
+    )
     args = parser.parse_args()
 
     if args.chart == "spotlight":
@@ -344,7 +373,9 @@ if __name__ == "__main__":
         if not by_page:
             print("No evaluation files found in evaluations/")
         else:
-            plot_spotlight(by_page)
+            plot_spotlight(by_page,
+                           best_page=args.best_page,
+                           worst_page=args.worst_page)
     else:
         data = load_evaluations()
         if not data:
