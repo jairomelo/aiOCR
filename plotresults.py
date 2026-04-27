@@ -1,5 +1,6 @@
-"""Plot WER and CER box plots from evaluation JSON files."""
+"""Plot WER and CER charts from evaluation JSON files."""
 
+import argparse
 import json
 import re
 from pathlib import Path
@@ -8,8 +9,65 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import numpy as np
+from matplotlib import gridspec
+from matplotlib.image import imread
+from matplotlib.patches import Patch
 
 EVALUATIONS_DIR = Path("evaluations")
+
+MODEL_COLORS = {
+    "DeepSeek-OCR":    "#4C72B0",
+    "Florence-2-large":"#DD8452",
+    "GLM-4.5V":        "#55A868",
+    "Qwen2.5-VL-3B":   "#C44E52",
+    "Qwen2.5-VL-7B":   "#8172B2",
+}
+
+MODEL_SHORT = {
+    "DeepSeek-OCR":    "DeepSeek",
+    "Florence-2-large":"Florence-2",
+    "GLM-4.5V":        "GLM-4.5V",
+    "Qwen2.5-VL-3B":   "Qwen-3B",
+    "Qwen2.5-VL-7B":   "Qwen-7B",
+}
+
+DOC_META = {
+    "pineda1_page_4": {
+        "label": "pineda1 — page 4",
+        "desc":  "Printed book (1852)\n300 DPI · PNG",
+    },
+    "AR_SR8V4R3_4": {
+        "label": "AR_SR8V4R3 — page 4",
+        "desc":  "Handwritten archival\n200 DPI · JPG",
+    },
+}
+
+
+def load_by_page() -> dict[str, dict[str, tuple]]:
+    """Return {page: {model: (wer, cer, has_text)}}."""
+    pattern = re.compile(r"^(.+?)_(.+?)_evaluation\.json$")
+    data: dict = {}
+    for path in sorted(EVALUATIONS_DIR.glob("*_evaluation.json")):
+        m = pattern.match(path.name)
+        if not m:
+            continue
+        model, page = m.group(1), m.group(2)
+        record = json.load(path.open())
+        has_text = bool(record.get("ocr", "").strip())
+        data.setdefault(page, {})[model] = (record["wer"], record["cer"], has_text)
+    return data
+
+
+def find_image(page_key: str) -> Path | None:
+    """Locate the image file for a given page key."""
+    for img_dir in sorted(Path("images").iterdir()):
+        if not img_dir.is_dir():
+            continue
+        for ext in ("png", "jpg", "jpeg"):
+            candidate = img_dir / f"{page_key}.{ext}"
+            if candidate.exists():
+                return candidate
+    return None
 
 
 def load_evaluations() -> dict[str, dict[str, list[float]]]:
@@ -110,13 +168,125 @@ def plot(data: dict) -> None:
     plt.show()
 
 
+def plot_spotlight(
+    data_by_page: dict,
+    best_page: str = "pineda1_page_4",
+    worst_page: str = "AR_SR8V4R3_4",
+) -> None:
+    pages      = [best_page, worst_page]
+    accents    = ["#2ca02c", "#d62728"]
+    row_labels = ["Best document", "Worst document"]
+
+    fig = plt.figure(figsize=(14, 8))
+    gs  = gridspec.GridSpec(2, 3, width_ratios=[1.5, 2, 2], hspace=0.55, wspace=0.35)
+    fig.suptitle(
+        "OCR Spotlight — Best vs. Worst Document",
+        fontsize=14, fontweight="bold", y=1.01,
+    )
+
+    for row, (page, accent, row_label) in enumerate(zip(pages, accents, row_labels)):
+        meta         = DOC_META.get(page, {"label": page, "desc": ""})
+        page_results = data_by_page.get(page, {})
+        models_here  = sorted(page_results.keys())
+        x            = np.arange(len(models_here))
+        bar_width    = 0.55
+
+        # --- Thumbnail ---
+        ax_img = fig.add_subplot(gs[row, 0])
+        img_path = find_image(page)
+        if img_path:
+            img = imread(str(img_path))
+            ax_img.imshow(img, aspect="auto")
+        else:
+            ax_img.text(0.5, 0.5, "Image\nnot found",
+                        ha="center", va="center",
+                        transform=ax_img.transAxes, color="gray")
+        ax_img.set_xticks([])
+        ax_img.set_yticks([])
+        for spine in ax_img.spines.values():
+            spine.set_visible(True)
+            spine.set_edgecolor(accent)
+            spine.set_linewidth(2.5)
+        ax_img.set_title(
+            f"{row_label}\n{meta['label']}\n{meta['desc']}",
+            fontsize=9, loc="left", pad=6,
+        )
+
+        # --- WER and CER bar charts ---
+        short_labels = [MODEL_SHORT.get(m, m) for m in models_here]
+        for col, (metric_idx, metric_label) in enumerate(
+            [(0, "Word Error Rate (WER)"), (1, "Character Error Rate (CER)")], start=1
+        ):
+            ax = fig.add_subplot(gs[row, col])
+            vals      = [page_results[m][metric_idx] for m in models_here]
+            has_texts = [page_results[m][2]           for m in models_here]
+            colors    = [MODEL_COLORS.get(m, "#888888") for m in models_here]
+
+            bars = ax.bar(x, vals, width=bar_width, color=colors,
+                          edgecolor="white", linewidth=0.8)
+
+            for bar, val, has_text in zip(bars, vals, has_texts):
+                if not has_text:
+                    bar.set_hatch("////")
+                    bar.set_edgecolor("black")
+                    ax.annotate(
+                        "empty",
+                        (bar.get_x() + bar.get_width() / 2, val),
+                        xytext=(0, 4), textcoords="offset points",
+                        ha="center", fontsize=7, color="black",
+                    )
+                else:
+                    ax.annotate(
+                        f"{val:.2f}",
+                        (bar.get_x() + bar.get_width() / 2, val),
+                        xytext=(0, 4), textcoords="offset points",
+                        ha="center", fontsize=8, color="black",
+                    )
+
+            ax.set_xticks(x)
+            ax.set_xticklabels(short_labels, rotation=20, ha="right", fontsize=8)
+            ax.set_ylim(0, 1.18)
+            ax.yaxis.set_major_formatter(mticker.PercentFormatter(xmax=1, decimals=0))
+            ax.set_title(metric_label, fontsize=9)
+            ax.grid(axis="y", linestyle="--", alpha=0.4)
+            ax.spines["top"].set_visible(False)
+            ax.spines["right"].set_visible(False)
+
+    fig.legend(
+        handles=[Patch(facecolor="gray", hatch="////", edgecolor="black",
+                       label="Empty output (model refused / hallucinated)")],
+        loc="lower center", ncol=1, fontsize=9, bbox_to_anchor=(0.5, -0.04),
+    )
+
+    out = Path("evaluations/results_spotlight.png")
+    plt.savefig(out, dpi=150, bbox_inches="tight")
+    print(f"Saved → {out}")
+    plt.show()
+
+
 if __name__ == "__main__":
-    data = load_evaluations()
-    if not data:
-        print("No evaluation files found in evaluations/")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--chart",
+        choices=["boxplot", "spotlight"],
+        default="boxplot",
+        help="Chart type to generate (default: boxplot)",
+    )
+    args = parser.parse_args()
+
+    if args.chart == "spotlight":
+        by_page = load_by_page()
+        if not by_page:
+            print("No evaluation files found in evaluations/")
+        else:
+            plot_spotlight(by_page)
     else:
-        for model, vals in sorted(data.items()):
-            print(f"{model}: {len(vals['wer'])} page(s) — "
-                  f"WER {np.mean(vals['wer']):.3f} ± {np.std(vals['wer']):.3f} | "
-                  f"CER {np.mean(vals['cer']):.3f} ± {np.std(vals['cer']):.3f}")
-        plot(data)
+        data = load_evaluations()
+        if not data:
+            print("No evaluation files found in evaluations/")
+        else:
+            for model, vals in sorted(data.items()):
+                print(f"{model}: {len(vals['wer'])} page(s) — "
+                      f"WER {np.mean(vals['wer']):.3f} ± {np.std(vals['wer']):.3f} | "
+                      f"CER {np.mean(vals['cer']):.3f} ± {np.std(vals['cer']):.3f}")
+            plot(data)
