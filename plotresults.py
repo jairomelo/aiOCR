@@ -21,6 +21,7 @@ MODEL_COLORS = {
     "GLM-4.5V":        "#55A868",
     "Qwen2.5-VL-3B":   "#C44E52",
     "Qwen2.5-VL-7B":   "#8172B2",
+    "Tesseract-OCR":   "#937860",
 }
 
 MODEL_SHORT = {
@@ -29,6 +30,7 @@ MODEL_SHORT = {
     "GLM-4.5V":        "GLM-4.5V",
     "Qwen2.5-VL-3B":   "Qwen-3B",
     "Qwen2.5-VL-7B":   "Qwen-7B",
+    "Tesseract-OCR":   "Tesseract",
 }
 
 DOC_META = {
@@ -38,7 +40,7 @@ DOC_META = {
     },
     "AR_SR8V4R3_4": {
         "label": "AR_SR8V4R3 — page 4",
-        "desc":  "Handwritten archival\n200 DPI · JPG",
+        "desc":  "Handwritten archival\n200 DPI · JPG\nMultispectral scan",
     },
 }
 
@@ -222,25 +224,31 @@ def plot_spotlight(
             has_texts = [page_results[m][2]           for m in models_here]
             colors    = [MODEL_COLORS.get(m, "#888888") for m in models_here]
 
-            bars = ax.bar(x, vals, width=bar_width, color=colors,
+            y_cap = 1.0
+            capped_vals = [min(v, y_cap) for v in vals]
+            bars = ax.bar(x, capped_vals, width=bar_width, color=colors,
                           edgecolor="white", linewidth=0.8)
 
-            for bar, val, has_text in zip(bars, vals, has_texts):
+            for bar, val, capped, has_text in zip(bars, vals, capped_vals, has_texts):
                 if not has_text:
                     bar.set_hatch("////")
                     bar.set_edgecolor("black")
+                    label_y = min(capped, y_cap)
                     ax.annotate(
                         "empty",
-                        (bar.get_x() + bar.get_width() / 2, val),
+                        (bar.get_x() + bar.get_width() / 2, label_y),
                         xytext=(0, 4), textcoords="offset points",
                         ha="center", fontsize=7, color="black",
                     )
                 else:
+                    label = f"{val:.2f}" if val <= y_cap else f"{val:.2f} ⚠"
                     ax.annotate(
-                        f"{val:.2f}",
-                        (bar.get_x() + bar.get_width() / 2, val),
+                        label,
+                        (bar.get_x() + bar.get_width() / 2, capped),
                         xytext=(0, 4), textcoords="offset points",
-                        ha="center", fontsize=8, color="black",
+                        ha="center", fontsize=8,
+                        color="black" if val <= y_cap else "#d62728",
+                        fontweight="normal" if val <= y_cap else "bold",
                     )
 
             ax.set_xticks(x)
@@ -253,9 +261,12 @@ def plot_spotlight(
             ax.spines["right"].set_visible(False)
 
     fig.legend(
-        handles=[Patch(facecolor="gray", hatch="////", edgecolor="black",
-                       label="Empty output (model refused / hallucinated)")],
-        loc="lower center", ncol=1, fontsize=9, bbox_to_anchor=(0.5, -0.04),
+        handles=[
+            Patch(facecolor="gray", hatch="////", edgecolor="black",
+                  label="Empty output (model refused / hallucinated)"),
+            Patch(facecolor="#d62728", label="⚠ WER > 100% (more errors than words in reference)"),
+        ],
+        loc="lower center", ncol=1, fontsize=9, bbox_to_anchor=(0.5, -0.07),
     )
 
     out = Path("evaluations/results_spotlight.png")
