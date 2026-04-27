@@ -11,6 +11,7 @@ import matplotlib.ticker as mticker
 import numpy as np
 from matplotlib import gridspec
 from matplotlib.image import imread
+from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 
 EVALUATIONS_DIR = Path("evaluations")
@@ -107,6 +108,20 @@ def plot(data: dict) -> None:
     x = np.arange(n)
     width = 0.35
 
+    # Use compact page IDs on points to avoid overlapping long labels.
+    seen_pages: set[str] = set()
+    page_order: list[str] = []
+    for model in models:
+        for page in data[model]["pages"]:
+            if page not in seen_pages:
+                seen_pages.add(page)
+                page_order.append(page)
+    page_ids = {page: f"P{i + 1:02d}" for i, page in enumerate(page_order)}
+    marker_cycle = ["o", "s", "^", "D", "v", "P", "X", "<", ">", "h", "*"]
+    page_markers = {page: marker_cycle[i % len(marker_cycle)] for i, page in enumerate(page_order)}
+    cmap = plt.get_cmap("tab20")
+    page_colors = {page: cmap(i % 20) for i, page in enumerate(page_order)}
+
     fig, axes = plt.subplots(1, 2, figsize=(10, 5), sharey=False)
     fig.suptitle("OCR Evaluation — WER and CER by Model", fontsize=13, fontweight="bold")
 
@@ -130,29 +145,21 @@ def plot(data: dict) -> None:
             flierprops=dict(marker="x", color=color),
         )
 
-        # Overlay individual data points
+        # Overlay individual data points with page-specific marker + color.
         for i, vals in enumerate(values_per_model):
             jitter = rng.uniform(-0.08, 0.08, size=len(vals))
-            ax.scatter(
-                x[i] + jitter,
-                vals,
-                color=color,
-                edgecolors="black",
-                linewidths=0.6,
-                s=60,
-                zorder=5,
-                label="_nolegend_",
-            )
-            # Annotate page labels
             pages = data[models[i]]["pages"]
             for j, (v, page) in enumerate(zip(vals, pages)):
-                ax.annotate(
-                    page,
-                    (x[i] + jitter[j], v),
-                    textcoords="offset points",
-                    xytext=(6, 2),
-                    fontsize=7,
-                    color="dimgray",
+                ax.scatter(
+                    x[i] + jitter[j],
+                    v,
+                    color=page_colors[page],
+                    marker=page_markers[page],
+                    edgecolors="black",
+                    linewidths=0.5,
+                    s=58,
+                    zorder=5,
+                    label="_nolegend_",
                 )
 
         ax.set_xticks(x)
@@ -163,7 +170,54 @@ def plot(data: dict) -> None:
         ax.grid(axis="y", linestyle="--", alpha=0.5)
         ax.set_xlim(-0.5, n - 0.5)
 
-    plt.tight_layout()
+    # Add compact page legend/key outside the plotting area.
+    page_handles = [
+        Line2D(
+            [0],
+            [0],
+            marker=page_markers[page],
+            color="none",
+            markerfacecolor=page_colors[page],
+            markeredgecolor="black",
+            markeredgewidth=0.5,
+            markersize=6,
+            linewidth=0,
+            label=page_ids[page],
+        )
+        for page in page_order
+    ]
+    if page_handles:
+        fig.legend(
+            handles=page_handles,
+            loc="lower center",
+            ncol=min(8, len(page_handles)),
+            fontsize=7,
+            title="Page IDs",
+            title_fontsize=8,
+            bbox_to_anchor=(0.5, 0.08),
+            frameon=False,
+            handletextpad=0.4,
+            columnspacing=0.8,
+        )
+
+    legend_items = [(page_ids[page], page) for page in page_order]
+    if legend_items:
+        columns = min(3, len(legend_items))
+        chunks = np.array_split(legend_items, columns)
+        fig.text(0.02, 0.055, "Page key", fontsize=8, fontweight="bold", ha="left", va="bottom")
+        for col, chunk in enumerate(chunks):
+            key_text = "\n".join(f"{item[0]}: {item[1]}" for item in chunk)
+            fig.text(
+                0.02 + col * 0.32,
+                0.005,
+                key_text,
+                fontsize=7,
+                ha="left",
+                va="bottom",
+                family="monospace",
+            )
+
+    plt.tight_layout(rect=(0, 0.22, 1, 1))
     out = Path("evaluations/results_boxplot.png")
     plt.savefig(out, dpi=150, bbox_inches="tight")
     print(f"Saved → {out}")
