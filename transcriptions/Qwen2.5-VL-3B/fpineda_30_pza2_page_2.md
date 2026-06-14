@@ -1,0 +1,5 @@
+tan inestimable beneficio! Usando, pues de esta preciosa facultad ofrecemos la publicacion de este papel que saldrá los lunes con el ojejo de inspirar amor á la virtud j aborrecimiento al vicio, con maximas de moral i urb anidad para instruccion de los ninos. No juzgarernos la conducta puhica ni privada de ninno empleado ni admitiremos ningun comunicado que sea ofensiva a ninguna individuo; i esperamons de los ciudadanos virtuosos, anantes de la felicidad comon. se sirvan honrrarnos con sus luces para cultivar la semilla que escojimos, cujas comunicaciones se recieben en la tienda donde se vende. Si este papel nos dise con que hacer el costo de la prensa continuar emos algun tiempo publicandolo, i tarremos de cuanto creamos conducente al bien de la sociedad.
+
+JUEGO.
+
+El vicio que causa mas perjuicios á la s
