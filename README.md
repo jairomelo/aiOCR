@@ -80,11 +80,10 @@ The text layer is extracted using `PyMuPDF`, and each page's text is stored in t
 
 ### Setup
 
-Add the required API keys to a `.env` file at the project root (already excluded from version control):
+Add the required API keys to a `.env` file at the project root:
 
 ```
 GRIT_KEY=your-grit-api-key
-DL_KEY=your-dream-lab-api-key   # optional
 ```
 
 ### Configured services
@@ -173,7 +172,7 @@ Use `transcribe_all.sh` to run the complete workflow in one command:
 
 1. Transcribe selected image folders with GRIT-compatible models
 2. Run batch evaluation against available ground truth
-3. Generate `heatmap` and `spotlight` charts
+3. Generate `boxplot, ``heatmap` and `spotlight` charts
 
 Run it from the project root:
 
@@ -184,7 +183,4 @@ bash transcribe_all.sh
 The script currently targets these models:
 
 - `gemma3:latest`
-- `llava:7b`
-- `mistral:latest`
-- `qwen3-coder-next:latest`
 - `qwen3.5:latest`
