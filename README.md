@@ -25,6 +25,15 @@ These models run successfully with 4-bit quantization:
 - Qwen2.5-VL-7B-Instruct [model card](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct)
 - Florence-2-large [model card](https://huggingface.co/microsoft/Florence-2-large)
 
+### UCSB GRIT-hosted models
+
+These OpenAI-compatible models are used through the UCSB GRIT infrastructure and run under the same OCR workflow as the local quantized models. The best results in this project have been observed with:
+
+- qwen3.5:latest
+- gemma3:latest
+
+Other GRIT models were also tested, but several produced hallucinations or poor OCR output. A current compatibility summary is documented in the `transcribe.py` section below.
+
 ### Failed tests
 
 These models were tested but did not meet evaluation criteria:
@@ -43,6 +52,10 @@ The following foundation model is included as a baseline for comparison:
 ### Tesseract
 
 Tesseract is included as a traditional OCR baseline for comparison.
+
+### Source
+
+The legacy OCR.
 
 ## Folder Structure
 
