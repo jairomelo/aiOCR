@@ -174,7 +174,7 @@ Use `transcribe_all.sh` to run the complete workflow in one command:
 
 1. Transcribe selected image folders with GRIT-compatible models
 2. Run batch evaluation against available ground truth
-3. Generate `boxplot` and `spotlight` charts
+3. Generate `heatmap` and `spotlight` charts
 
 Run it from the project root:
 

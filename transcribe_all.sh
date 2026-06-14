@@ -4,7 +4,7 @@ set -euo pipefail
 # End-to-end OCR pipeline for GRIT compatible models:
 # 1) Transcribe images for each model
 # 2) Evaluate against available ground truth
-# 3) Generate boxplot and spotlight charts
+# 3) Generate heatmap and spotlight charts
 
 MODELS=(
     "gemma3:latest"
@@ -53,7 +53,7 @@ echo "==> Running batch evaluation"
 uv run python evaluatemodel.py batch --models "${EVAL_MODELS[@]}" --typeOCR md
 
 echo "==> Generating charts"
-uv run python plotresults.py --chart boxplot
+uv run python plotresults.py --chart heatmap
 uv run python plotresults.py --chart spotlight
 
 echo "==> Pipeline completed"

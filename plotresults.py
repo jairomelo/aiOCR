@@ -238,6 +238,100 @@ def plot(data: dict) -> None:
     plt.show()
 
 
+def plot_heatmap(data_by_page: dict) -> None:
+    """Plot page-by-model heatmaps for WER and CER."""
+    models = sorted({model for page in data_by_page.values() for model in page})
+    if not models:
+        return
+
+    page_order = sorted(
+        data_by_page.keys(),
+        key=lambda page: np.median([vals[0] for vals in data_by_page[page].values()]),
+    )
+    page_ids = {page: f"P{i + 1:02d}" for i, page in enumerate(page_order)}
+    page_labels = [page_ids[page] for page in page_order]
+
+    model_order = sorted(
+        models,
+        key=lambda model: np.mean(
+            [data_by_page[page][model][0] for page in page_order if model in data_by_page[page]]
+        ),
+    )
+    short_labels: list[str] = [str(MODEL_SHORT.get(model) or model) for model in model_order]
+
+    fig = plt.figure(figsize=(12, 8))
+    gs = fig.add_gridspec(2, 2, width_ratios=[40, 1.2], hspace=0.34, wspace=0.12)
+    axes = [fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[1, 0])]
+    cax = fig.add_subplot(gs[:, 1])
+    fig.suptitle("OCR Evaluation — WER and CER Heatmaps", fontsize=13, fontweight="bold")
+
+    cmap = plt.get_cmap("YlOrRd").copy()
+    cmap.set_bad(color="#e6e6e6")
+
+    last_im = None
+    for ax, metric_idx, title in [
+        (axes[0], 0, "Word Error Rate (WER)"),
+        (axes[1], 1, "Character Error Rate (CER)"),
+    ]:
+        matrix = np.full((len(page_order), len(model_order)), np.nan, dtype=float)
+        for row, page in enumerate(page_order):
+            for col, model in enumerate(model_order):
+                if model in data_by_page[page]:
+                    matrix[row, col] = data_by_page[page][model][metric_idx]
+
+        display = np.ma.masked_invalid(matrix)
+        last_im = ax.imshow(display, aspect="auto", interpolation="nearest", vmin=0, vmax=1.0, cmap=cmap)
+
+        for row in range(matrix.shape[0]):
+            for col in range(matrix.shape[1]):
+                value = matrix[row, col]
+                if np.isnan(value):
+                    label = "NA"
+                    color = "#555555"
+                    weight = "normal"
+                else:
+                    label = f"{value:.0%}"
+                    color = "white" if value >= 0.55 else "black"
+                    weight = "bold" if value > 1.0 else "normal"
+                ax.text(col, row, label, ha="center", va="center", fontsize=7, color=color, fontweight=weight)
+
+        ax.set_xticks(np.arange(len(model_order)))
+        ax.set_xticklabels(short_labels, rotation=20, ha="right", fontsize=8)
+        ax.set_yticks(np.arange(len(page_order)))
+        ax.set_yticklabels(page_labels, fontsize=8)
+        ax.set_title(title)
+        ax.set_xlabel("Model")
+        ax.set_ylabel("Page")
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+
+    assert last_im is not None
+    cbar = fig.colorbar(last_im, cax=cax)
+    cbar.set_label("Error rate")
+    cbar.ax.yaxis.set_major_formatter(mticker.PercentFormatter(xmax=1, decimals=0))
+
+    page_key_lines = [f"{page_ids[page]}: {page}" for page in page_order]
+    if page_key_lines:
+        columns = min(3, len(page_key_lines))
+        chunks = np.array_split(page_key_lines, columns)
+        for col, chunk in enumerate(chunks):
+            fig.text(
+                0.02 + col * 0.32,
+                0.005,
+                "\n".join(chunk.tolist()),
+                fontsize=7,
+                ha="left",
+                va="bottom",
+                family="monospace",
+            )
+
+    fig.subplots_adjust(left=0.08, right=0.97, top=0.92, bottom=0.14)
+    out = Path("evaluations/results_heatmap.png")
+    plt.savefig(out, dpi=150, bbox_inches="tight")
+    print(f"Saved → {out}")
+    plt.show()
+
+
 def plot_spotlight(
     data_by_page: dict,
     best_page: str | None = None,
@@ -286,7 +380,7 @@ def plot_spotlight(
         )
 
         # --- WER and CER bar charts ---
-        short_labels = [MODEL_SHORT.get(m, m) for m in models_here]
+        short_labels: list[str] = [str(MODEL_SHORT.get(m) or m) for m in models_here]
         for col, (metric_idx, metric_label) in enumerate(
             [(0, "Word Error Rate (WER)"), (1, "Character Error Rate (CER)")], start=1
         ):
@@ -350,7 +444,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--chart",
-        choices=["boxplot", "spotlight"],
+        choices=["boxplot", "heatmap", "spotlight"],
         default="boxplot",
         help="Chart type to generate (default: boxplot)",
     )
@@ -376,6 +470,12 @@ if __name__ == "__main__":
             plot_spotlight(by_page,
                            best_page=args.best_page,
                            worst_page=args.worst_page)
+    elif args.chart == "heatmap":
+        by_page = load_by_page()
+        if not by_page:
+            print("No evaluation files found in evaluations/")
+        else:
+            plot_heatmap(by_page)
     else:
         data = load_evaluations()
         if not data:
