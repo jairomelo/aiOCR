@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 from PIL import Image
 from openai import OpenAI
+from openai import APIStatusError
 from dotenv import load_dotenv
 import argparse
 import base64
@@ -103,9 +104,21 @@ def _client(service: dict) -> OpenAI:
 
 def _encode_image(image_path: str | Path, max_width: int = 2048) -> str:
     """Resize image to max_width and return as base64-encoded JPEG string."""
+    return _encode_image_with_options(image_path, max_width=max_width, quality=95, grayscale=False)
+
+
+def _encode_image_with_options(
+    image_path: str | Path,
+    max_width: int,
+    quality: int,
+    grayscale: bool,
+) -> str:
+    """Encode image as base64 JPEG with explicit size/quality controls."""
     img = Image.open(image_path)
 
-    if img.mode != "RGB":
+    if grayscale:
+        img = img.convert("L")
+    elif img.mode != "RGB":
         img = img.convert("RGB")
 
     if img.width > max_width:
@@ -113,7 +126,7 @@ def _encode_image(image_path: str | Path, max_width: int = 2048) -> str:
         img = img.resize((max_width, int(img.height * ratio)), Image.Resampling.LANCZOS)
 
     buffer = BytesIO()
-    img.save(buffer, format="JPEG", quality=95)
+    img.save(buffer, format="JPEG", quality=quality)
     return base64.b64encode(buffer.getvalue()).decode("utf-8")
 
 
@@ -223,26 +236,82 @@ def transcribe_image(
     image_path: str | Path,
     prompt: str,
 ) -> tuple[str | None, CompletionUsage | None]:
-    """Send a single image to the model and return the plain-text transcription."""
-    b64 = _encode_image(image_path)
+    """Send a single image to the model and return plain-text transcription.
 
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": prompt},
+    If the provider returns HTTP 413 (payload too large), the image is progressively
+    downscaled/recompressed and retried.
+    """
+    encoding_attempts = [
+        {"max_width": 2048, "quality": 95, "grayscale": False},
+        {"max_width": 1536, "quality": 85, "grayscale": False},
+        {"max_width": 1280, "quality": 80, "grayscale": False},
+        {"max_width": 1024, "quality": 75, "grayscale": False},
+        {"max_width": 1024, "quality": 70, "grayscale": True},
+        {"max_width": 768, "quality": 65, "grayscale": True},
+    ]
+
+    last_error: Exception | None = None
+
+    for attempt_idx, opts in enumerate(encoding_attempts, start=1):
+        b64 = _encode_image_with_options(
+            image_path,
+            max_width=opts["max_width"],
+            quality=opts["quality"],
+            grayscale=opts["grayscale"],
+        )
+        payload_mb = round(len(b64.encode("utf-8")) / 1_000_000, 2)
+
+        try:
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
                     {
-                        "type": "image_url",
-                        "image_url": {"url": f"data:image/jpeg;base64,{b64}"},
-                    },
+                        "role": "user",
+                        "content": [
+                            {"type": "text", "text": prompt},
+                            {
+                                "type": "image_url",
+                                "image_url": {"url": f"data:image/jpeg;base64,{b64}"},
+                            },
+                        ],
+                    }
                 ],
-            }
-        ],
-    )
+            )
 
-    return response.choices[0].message.content, response.usage
+            if attempt_idx > 1:
+                logging.info(
+                    "Payload accepted after resize: "
+                    f"attempt={attempt_idx}, max_width={opts['max_width']}, "
+                    f"quality={opts['quality']}, grayscale={opts['grayscale']}, "
+                    f"payload~{payload_mb}MB"
+                )
+
+            return response.choices[0].message.content, response.usage
+
+        except APIStatusError as e:
+            last_error = e
+            if e.status_code == 413 and attempt_idx < len(encoding_attempts):
+                logging.warning(
+                    "HTTP 413 payload too large: retrying with smaller image "
+                    f"(attempt={attempt_idx + 1}/{len(encoding_attempts)})."
+                )
+                continue
+            raise
+        except Exception as e:
+            # Handle non-typed errors that still include explicit 413 text.
+            last_error = e
+            if "413" in str(e) and attempt_idx < len(encoding_attempts):
+                logging.warning(
+                    "Detected 413 in error text: retrying with smaller image "
+                    f"(attempt={attempt_idx + 1}/{len(encoding_attempts)})."
+                )
+                continue
+            raise
+
+    if last_error is not None:
+        raise last_error
+
+    raise RuntimeError("Transcription failed without a captured error.")
 
 
 def batch_transcribe(

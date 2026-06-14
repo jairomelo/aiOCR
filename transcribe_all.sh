@@ -19,6 +19,9 @@ FOLDERS=(
     "images/dmcz_18250101"
     "images/el-redactor-1"
     "images/pineda1"
+    "images/fpineda_30_pza2"
+    "images/fpineda_184_pza6"
+    "images/fpineda_196_pza8"
 )
 
 echo "==> Starting transcription batch"

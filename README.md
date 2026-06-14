@@ -122,6 +122,8 @@ python transcribe.py --model gemma4:31b --images images/pineda1/
 
 If no `--images` folder is specified, the script defaults to the entire `images/` directory.
 
+If the provider returns `413 Request Entity Too Large`, `transcribe.py` automatically retries with progressively smaller image encodings (downscale/compression/grayscale) before failing.
+
 **Use a custom prompt from a file:**
 
 ```bash
