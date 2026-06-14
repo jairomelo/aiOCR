@@ -41,8 +41,7 @@ These models were tested but did not meet evaluation criteria:
 - Gemma 4 E4B [model card](https://huggingface.co/google/gemma-4-E4B) -> Failed to identify the text in the image
 - InternVL3-2B [model card](https://huggingface.co/OpenGVLab/InternVL3-2B) -> No support for 4-bit compression
 - MiniCPM-V-2_6 [model card](https://huggingface.co/openbmb/MiniCPM-V-2_6) -> Requires `flash-attn`, not compatible with T4 GPU
-- Phi-3.5-vision [model card](https://huggingface.co/microsoft/Phi-3.5-vision-instruct) -> Generates excessive hallucinations in limited GPU settings
-- llava:7b, mistral:latest, and qwen3-coder-next:latest -> Generates excessive hallucinations in limited GPU settings.
+- Phi-3.5-vision [model card](https://huggingface.co/microsoft/Phi-3.5-vision-instruct), llava-v1.5-7b [model card](https://huggingface.co/liuhaotian/llava-v1.5-7b), mistral 7B [model card](https://ollama.com/library/mistral:latest), and Qwen3-Coder-Next [model card](https://ollama.com/library/qwen3-coder-next:latest) -> Generate excessive hallucinations in limited GPU settings.
 
 ### Foundation Models
 
