@@ -29,8 +29,8 @@ These models run successfully with 4-bit quantization:
 
 These OpenAI-compatible models are used through the UCSB GRIT infrastructure and run under the same OCR workflow as the local quantized models. The best results in this project have been observed with:
 
-- qwen3.5:latest
-- gemma3:latest
+- Qwen 3.5 [model card](https://ollama.com/library/qwen3.5:latest)
+- Gemma 3 [model card](https://ollama.com/library/gemma3:latest)
 
 Other GRIT models were also tested, but several produced hallucinations or poor OCR output. A current compatibility summary is documented in the `transcribe.py` section below.
 
