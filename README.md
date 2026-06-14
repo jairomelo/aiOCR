@@ -83,12 +83,29 @@ DL_KEY=your-dream-lab-api-key   # optional
 
 New services can be added by extending the `SERVICES` dict in `transcribe.py` and adding the corresponding key to `.env`.
 
+### GRIT tested compatibility (current)
+
+Based on local tests for this OCR workflow:
+
+- `compatible`: `gemma3:latest`, `llava:7b`, `mistral:latest`, `qwen3-coder-next:latest`, `qwen3.5:latest`
+- `compatible_slow`: `gemma4:31b`
+- `not_sure`: `deepseek-r1:latest`, `llama3:latest`, `qwen3:latest`, `phi4:latest`, `llama3.1:8b`, `qwen3-coder:latest`
+- `incompatible`: `gpt-oss:20b`
+
+`transcribe.py --list-models --service grit` shows these labels next to each model.
+
 ### Usage
 
 **List available models for a service:**
 
 ```bash
 python transcribe.py --list-models --service grit
+```
+
+**Enforce only tested compatible models (GRIT):**
+
+```bash
+python transcribe.py --service grit --model gemma3:latest --images images/pineda1/ --enforce-compatible
 ```
 
 **Transcribe a single image:**
@@ -134,3 +151,25 @@ Transcriptions are saved to `transcriptions/{model}/{stem}.md`, where colons in 
 ```bash
 python evaluatemodel.py single gemma4-31b pineda1_page_1
 ```
+
+## End-to-end pipeline script
+
+Use `transcribe_all.sh` to run the complete workflow in one command:
+
+1. Transcribe selected image folders with GRIT-compatible models
+2. Run batch evaluation against available ground truth
+3. Generate `boxplot` and `spotlight` charts
+
+Run it from the project root:
+
+```bash
+bash transcribe_all.sh
+```
+
+The script currently targets these models:
+
+- `gemma3:latest`
+- `llava:7b`
+- `mistral:latest`
+- `qwen3-coder-next:latest`
+- `qwen3.5:latest`
