@@ -91,7 +91,6 @@ GRIT_KEY=your-grit-api-key
 | Service | Base URL |
 |---|---|
 | `grit` | `https://llm.grit.ucsb.edu/api/v1` |
-| `dream-lab` | `https://litellm.dreamlab.ucsb.edu/` |
 
 New services can be added by extending the `SERVICES` dict in `transcribe.py` and adding the corresponding key to `.env`.
 
