@@ -23,7 +23,7 @@ def extract_text_layer(pdf_path, limit=None, pages=None, verbose=False, overwrit
     pdf_path = Path(pdf_path)
     try:
         doc = fitz.open(pdf_path)
-        output_text_dir = Path(globalc.TRANSCRIPTIONS_DIR, 'source', pdf_path.stem)
+        output_text_dir = Path(globalc.TRANSCRIPTIONS_DIR, 'source')
         output_text_dir.mkdir(exist_ok=True, parents=True)
 
         for page_number in _resolve_pages(pages, limit, len(doc)):
