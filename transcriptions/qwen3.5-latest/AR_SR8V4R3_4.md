@@ -1,0 +1,20 @@
+1809 Enero 16 -3-
+
+Don Antonio Amar y Borbon, Arguedas, y Vallejo de Santa Cruz, Caballero profeso del orden de Santiago, Teniente General de los Reales Exercitos, Virey Gobernador y Capitan General de este Nuevo Reyno de Granada, Presidente de la Real Audiencia de Santafe, y de la Junta Superior de Real Hacienda, Superintendente general de esta, y de rentas estancadas, subdelevado de la de Correos.
+
+Por un extraordinario que seme despacho de la Plaza de Cartagena de Indias y ha llegado a esta Capital el Viernes trece del corriente, con Pliegos del Real servicio conduci dos a aquel destino en un Buque Nacional, he recibido la Carta acordada del S.ºn Secretario del Real y Supremo Consejo de estos Dominios, Don Silvestre Collar, del tenor siguiente. =
+
+Exmo. Señor,
+
+El Serentisimo Senor Conde de Floridablanca, Presidente de la Junta Central Suprema de España e Indias, que gobierna a nombre de nuestro Rey y Senor Don FERNANDO el VII (que Dios guarde ), pasó al Senor Marques de Bujamar, Gobernador del Supremo Consejo de Indias, el Oficio, cuyo tenor y el de la. Certification que en el se expresa el siguiente:
+
+"Exmo. Senores! Por uniformidad de votos de casi todos los vocales que representan los Reinos de España. se hizo la instalacion solemnne de la Junta Central del Gobierno de ellos y de los de Indias en el dia de ayer 25 del corriente, con las ceremonias y formalidades que constan del Acta de instalacion; de que incluyo a V. E. copia certificada, para que instruya de ellas al Consejo; y siendo una de las formalidades la del Juramento de fidelidad a la Religion, al Rey y a la Patria, que consta por instrumento en la citada Acta, corresponde que ese Consejo haga el mismo juramento, como y lo hizieron el Prelado asistente, el Presidente interior y los individuos de la Junta; y excutado que sea, encarga esta a V. E. que haga entender al Consejo de Indias, que con la brevedad posible, e igual formalidad espida sus Cedulas, y ordenes a todos sus dependientes de los Dominios de Indias en los quatro. Virreinatos e Islas adyacentes, para que reconozcan y obedezcan sin dilacion la autoridad soberana de nuestro amado Rey FERNANDO VII, y como depositaria de ella, hasta sus restablecimiento en todo el poder, esplendor y dignidad que corresponda, la de esta Junta Suprema de Gobierno de España e Indias, reprobando y anulando cualquier juramento u acto contrario que hayan hecho por miedo, coaccion o falta de advertencia y libertad; en la inteligencia de que a los i disobedientes se les castigara y tratara como reos de lesa Maestad. El Consejo sin embargo continuara exerciendo las funciones de su instituto, consultando a la Junta en los casos que excedesen sus facultades ordinarias, como no haria si estubiese presente S. M. en estos Reinos; y de quedar el Consejo encargado de esta resolucion, y de su cumplimiento, se servira V. E. darse aviso para la inteligencia de la Junta. Dios guarde a V. E. muchos anos. Aranjuez 26 de Setiembre de 1808 = El Conde de Floridablanca, Presidente interior = Martin de Garay, Vocal Secretario interior, = Senor Gobernador del Consejo de Indias."
+
+El S. Conde de Floridablanca, Presidente interior, "En consecuencia del acuerdo de ayer 24 del corriente, en conferencia preparatoria, y por el qual se resovido que en el dia de hoy y hora, de la nueve y media de su manana, se instalase la Junta Central Suprema y Gobernadora del Reyno, para cuyo objeto fueron citados todos los Senores Diputados presentes en este Real Sitio, que son mas de las dos terceras partes que deben componer la Junta de Go-
+
+El Sr. D. Francisco Pareja
+El Sr. D. Lorenzo Calle,
+Por Aragon ,
+tiva del Reyno, para cuyo objeto fueron citados todos los Se-
+nores Diputados presentes en este Real Sitio, que son mas de
+las dos terceras partes que deben componer la Junta de Go-
