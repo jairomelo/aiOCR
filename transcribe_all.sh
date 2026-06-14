@@ -53,6 +53,7 @@ echo "==> Running batch evaluation"
 uv run python evaluatemodel.py batch --models "${EVAL_MODELS[@]}" --typeOCR md
 
 echo "==> Generating charts"
+uv run python plotresults.py --chart boxplot
 uv run python plotresults.py --chart heatmap
 uv run python plotresults.py --chart spotlight
 
