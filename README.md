@@ -59,3 +59,78 @@ The text layer is extracted using `PyMuPDF`, and each page's text is stored in t
 - **Configuration**: A simple global configuration file is included in `helpers/globalc.py`. You can apply local directory changes in the workspace by running `python helpers/globalc.py --config-local`.
 - **pdf2img**: CLI tool that extracts the text layer and converts PDF pages into images. Explore available parameters by running `python pdf2img.py --help`.
 - **evaluatemodel**: CLI tool that evaluates a model's text recognition output against a ground-truth, human-generated transcription.
+- **transcribe**: CLI tool that sends images to an OpenAI-compatible LLM service and saves the transcription output. Replaces the model-specific Jupyter notebooks that previously ran on Google Colab.
+
+## Transcribing with `transcribe.py`
+
+`transcribe.py` uses the OpenAI-compatible API to batch-transcribe images using university-hosted or other external LLM services. Transcription output is saved to `transcriptions/{model}/` and is directly compatible with `evaluatemodel.py`.
+
+### Setup
+
+Add the required API keys to a `.env` file at the project root (already excluded from version control):
+
+```
+GRIT_KEY=your-grit-api-key
+DL_KEY=your-dream-lab-api-key   # optional
+```
+
+### Configured services
+
+| Service | Base URL |
+|---|---|
+| `grit` | `https://llm.grit.ucsb.edu/api/v1` |
+| `dream-lab` | `https://litellm.dreamlab.ucsb.edu/` |
+
+New services can be added by extending the `SERVICES` dict in `transcribe.py` and adding the corresponding key to `.env`.
+
+### Usage
+
+**List available models for a service:**
+
+```bash
+python transcribe.py --list-models --service grit
+```
+
+**Transcribe a single image:**
+
+```bash
+python transcribe.py --model gemma4:31b --image images/pineda1/pineda1_page_1.png
+```
+
+**Transcribe all images in a folder:**
+
+```bash
+python transcribe.py --model gemma4:31b --images images/pineda1/
+```
+
+If no `--images` folder is specified, the script defaults to the entire `images/` directory.
+
+**Use a custom prompt from a file:**
+
+```bash
+python transcribe.py --model gemma4:31b --images images/pineda1/ --prompt prompts/my_prompt.txt
+```
+
+**Track token usage:**
+
+```bash
+python transcribe.py --model gemma4:31b --images images/pineda1/ --usage-data
+```
+
+Usage records are appended to `evaluations/usage.json`.
+
+**Re-run and overwrite existing transcriptions:**
+
+```bash
+python transcribe.py --model gemma4:31b --images images/pineda1/ --overwrite
+```
+
+By default the script skips images that already have a transcription file.
+
+### Output and model names
+
+Transcriptions are saved to `transcriptions/{model}/{stem}.md`, where colons in the model name are replaced with hyphens (e.g. `gemma4:31b` → `gemma4-31b`). Use the same sanitized name when evaluating:
+
+```bash
+python evaluatemodel.py single gemma4-31b pineda1_page_1
+```

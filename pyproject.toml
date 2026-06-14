@@ -8,7 +8,10 @@ dependencies = [
     "argparse>=1.4.0",
     "jiwer>=4.0.0",
     "matplotlib>=3.10.8",
+    "openai>=2.40.0",
+    "pillow>=12.2.0",
     "pymupdf>=1.27.2.2",
     "pytesseract>=0.3.13",
+    "python-dotenv>=1.2.2",
     "python-frontmatter>=1.1.0",
 ]
