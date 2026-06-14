@@ -42,6 +42,7 @@ These models were tested but did not meet evaluation criteria:
 - InternVL3-2B [model card](https://huggingface.co/OpenGVLab/InternVL3-2B) -> No support for 4-bit compression
 - MiniCPM-V-2_6 [model card](https://huggingface.co/openbmb/MiniCPM-V-2_6) -> Requires `flash-attn`, not compatible with T4 GPU
 - Phi-3.5-vision [model card](https://huggingface.co/microsoft/Phi-3.5-vision-instruct) -> Generates excessive hallucinations in limited GPU settings
+- llava:7b, mistral:latest, and qwen3-coder-next:latest -> Generates excessive hallucinations in limited GPU settings.
 
 ### Foundation Models
 
