@@ -1,0 +1,20 @@
+## incompatible
+gpt-oss:20b
+
+## compatible
+gemma3:latest
+llava:7b
+mistral:latest
+qwen3-coder-next:latest
+qwen3.5:latest
+
+## not sure (model doesn't recognize any image)
+deepseek-r1:latest
+llama3:latest
+qwen3:latest
+phi4:latest
+llama3.1:8b
+qwen3-coder:latest
+
+## compatible but painfully slow
+gemma4:31b
